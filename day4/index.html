@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 - DOM Manipulation & Events</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-code"></i> DOM Manipulation & Events</h1>
+            <p class="subtitle">Day 4 of JavaScript Learning Journey</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab active" data-tab="selectors">Selectors</button>
+            <button class="tab" data-tab="manipulation">Manipulation</button>
+            <button class="tab" data-tab="events">Events</button>
+            <button class="tab" data-tab="projects">Projects</button>
+        </nav>
+
+        <main>
+            <!-- TAB 1: SELECTORS -->
+            <section id="selectors" class="tab-content active">
+                <h2><i class="fas fa-mouse-pointer"></i> DOM Selectors</h2>
+                
+                <div class="demo-area">
+                    <div class="element-list">
+                        <div class="element" id="uniqueElement">Element with ID</div>
+                        <div class="element">Element with Class 1</div>
+                        <div class="element">Element with Class 2</div>
+                        <div class="element special">Special Element</div>
+                        <div class="element" data-custom="value">Element with Data Attribute</div>
+                    </div>
+
+                    <div class="controls">
+                        <h3>Try These Selectors:</h3>
+                        <div class="buttons">
+                            <button onclick="selectById()">Select by ID</button>
+                            <button onclick="selectByClass()">Select by Class</button>
+                            <button onclick="selectByTag()">Select by Tag</button>
+                            <button onclick="selectByQuery()">Select by Query</button>
+                            <button onclick="selectAll()">Select All Elements</button>
+                        </div>
+                        
+                        <div class="output">
+                            <h4>Selected Elements:</h4>
+                            <div id="selectorOutput"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: MANIPULATION -->
+            <section id="manipulation" class="tab-content">
+                <h2><i class="fas fa-edit"></i> DOM Manipulation</h2>
+                
+                <div class="demo-area">
+                    <div class="playground" id="manipulationPlayground">
+                        <div class="box" id="box1">Box 1</div>
+                        <div class="box" id="box2">Box 2</div>
+                        <div class="box" id="box3">Box 3</div>
+                    </div>
+
+                    <div class="controls">
+                        <h3>Manipulation Tools:</h3>
+                        <div class="manipulation-controls">
+                            <div class="control-group">
+                                <label>Content:</label>
+                                <input type="text" id="contentInput" placeholder="New content...">
+                                <button onclick="changeContent()">Change Content</button>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label>Style:</label>
+                                <select id="styleSelect">
+                                    <option value="color: red">Red Text</option>
+                                    <option value="background: blue; color: white">Blue Background</option>
+                                    <option value="transform: rotate(10deg)">Rotate 10°</option>
+                                    <option value="border: 3px solid green">Green Border</option>
+                                </select>
+                                <button onclick="applyStyle()">Apply Style</button>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label>Classes:</label>
+                                <button onclick="addClass()">Add 'highlight' Class</button>
+                                <button onclick="removeClass()">Remove 'highlight'</button>
+                                <button onclick="toggleClass()">Toggle 'highlight'</button>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label>Structure:</label>
+                                <button onclick="createElement()">Create New Element</button>
+                                <button onclick="removeElement()">Remove Element</button>
+                                <button onclick="cloneElement()">Clone Element</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: EVENTS -->
+            <section id="events" class="tab-content">
+                <h2><i class="fas fa-bolt"></i> Event Handling</h2>
+                
+                <div class="demo-area">
+                    <div class="event-playground">
+                        <div class="event-box" id="clickBox">
+                            Click Me!
+                            <div class="event-counter">Clicks: <span>0</span></div>
+                        </div>
+                        
+                        <div class="event-box" id="mouseBox">
+                            Hover Over Me!
+                            <div class="event-counter">Hovers: <span>0</span></div>
+                        </div>
+                        
+                        <div class="event-box" id="keyBox">
+                            Focus and Type!
+                            <input type="text" placeholder="Type something...">
+                            <div class="event-counter">Keys Pressed: <span>0</span></div>
+                        </div>
+                        
+                        <div class="event-box" id="formBox">
+                            <form id="demoForm">
+                                <input type="text" placeholder="Enter name" required>
+                                <input type="email" placeholder="Enter email" required>
+                                <button type="submit">Submit</button>
+                            </form>
+                            <div class="event-counter">Submissions: <span>0</span></div>
+                        </div>
+                    </div>
+
+                    <div class="event-log">
+                        <h3>Event Log:</h3>
+                        <div id="eventLog"></div>
+                        <button onclick="clearEventLog()">Clear Log</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: PROJECTS -->
+            <section id="projects" class="tab-content">
+                <h2><i class="fas fa-rocket"></i> Mini Projects</h2>
+                
+                <div class="projects-grid">
+                    <!-- PROJECT 1: TODO LIST -->
+                    <div class="project-card">
+                        <h3><i class="fas fa-tasks"></i> Todo List</h3>
+                        <div class="todo-app">
+                            <div class="todo-input">
+                                <input type="text" id="todoInput" placeholder="Add a new task...">
+                                <button onclick="addTodo()"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <ul id="todoList">
+                                <!-- Todos will be added here -->
+                            </ul>
+                            <div class="todo-stats">
+                                <span>Total: <span id="totalTodos">0</span></span>
+                                <span>Completed: <span id="completedTodos">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROJECT 2: COLOR PICKER -->
+                    <div class="project-card">
+                        <h3><i class="fas fa-palette"></i> Color Picker</h3>
+                        <div class="color-picker">
+                            <div class="color-controls">
+                                <label>Red: <input type="range" id="redRange" min="0" max="255" value="120"></label>
+                                <label>Green: <input type="range" id="greenRange" min="0" max="255" value="80"></label>
+                                <label>Blue: <input type="range" id="blueRange" min="0" max="255" value="200"></label>
+                            </div>
+                            <div class="color-display" id="colorDisplay">
+                                <div class="color-box"></div>
+                                <div class="color-value">RGB(120, 80, 200)</div>
+                            </div>
+                            <div class="color-presets">
+                                <button class="color-preset" style="background: #ff6b6b;" data-color="#ff6b6b"></button>
+                                <button class="color-preset" style="background: #4ecdc4;" data-color="#4ecdc4"></button>
+                                <button class="color-preset" style="background: #ffe66d;" data-color="#ffe66d"></button>
+                                <button class="color-preset" style="background: #1a535c;" data-color="#1a535c"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROJECT 3: COUNTER APP -->
+                    <div class="project-card">
+                        <h3><i class="fas fa-calculator"></i> Counter App</h3>
+                        <div class="counter-app">
+                            <div class="counter-display" id="counterValue">0</div>
+                            <div class="counter-controls">
+                                <button onclick="decrementCounter()"><i class="fas fa-minus"></i></button>
+                                <button onclick="resetCounter()"><i class="fas fa-redo"></i></button>
+                                <button onclick="incrementCounter()"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="counter-options">
+                                <label>
+                                    <input type="checkbox" id="negativeAllowed"> Allow Negative
+                                </label>
+                                <label>
+                                    Step: <input type="number" id="stepValue" value="1" min="1" max="10">
+                                </label>
+                            </div>
+                            <div class="counter-history">
+                                <h4>History:</h4>
+                                <div id="counterHistory"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="git-info">
+                <p><i class="fab fa-git-alt"></i> Day 4 - DOM & Events</p>
+                <p class="timestamp" id="lastUpdated">Last updated: <span>Just now</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
