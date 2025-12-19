@@ -270,3 +270,479 @@ function clearSelectedBox() {
         selectedBox = null;
     }
 }
+
+// ============================================
+// PART 4: EVENT HANDLING DEMO
+// ============================================
+
+function initEventListeners() {
+    // Click Event
+    const clickBox = document.getElementById('clickBox');
+    let clickCount = 0;
+    
+    clickBox.addEventListener('click', function(e) {
+        clickCount++;
+        this.querySelector('span').textContent = clickCount;
+        logEvent(`Clicked on Click Box! Total clicks: ${clickCount}`);
+        
+        // Visual feedback
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 150);
+    });
+    
+    // Mouse Events
+    const mouseBox = document.getElementById('mouseBox');
+    let hoverCount = 0;
+    
+    mouseBox.addEventListener('mouseenter', function() {
+        hoverCount++;
+        this.querySelector('span').textContent = hoverCount;
+        logEvent('Mouse entered Hover Box');
+        this.style.backgroundColor = '#f5576c';
+    });
+    
+    mouseBox.addEventListener('mouseleave', function() {
+        logEvent('Mouse left Hover Box');
+        this.style.backgroundColor = '';
+    });
+    
+    mouseBox.addEventListener('mousemove', function(e) {
+        const x = e.offsetX;
+        const y = e.offsetY;
+        this.style.background = `radial-gradient(circle at ${x}px ${y}px, #f093fb, #f5576c)`;
+    });
+    
+    // Keyboard Events
+    const keyInput = document.querySelector('#keyBox input');
+    let keyCount = 0;
+    
+    keyInput.addEventListener('focus', function() {
+        logEvent('Keyboard input focused');
+        this.parentElement.style.borderColor = '#4facfe';
+    });
+    
+    keyInput.addEventListener('blur', function() {
+        logEvent('Keyboard input blurred');
+        this.parentElement.style.borderColor = '';
+    });
+    
+    keyInput.addEventListener('keydown', function(e) {
+        keyCount++;
+        this.parentElement.querySelector('span').textContent = keyCount;
+        logEvent(`Key pressed: ${e.key} (KeyCode: ${e.keyCode})`);
+    });
+    
+    // Form Events
+    const demoForm = document.getElementById('demoForm');
+    let submitCount = 0;
+    
+    demoForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitCount++;
+        this.parentElement.querySelector('span').textContent = submitCount;
+        
+        const formData = new FormData(this);
+        const name = formData.get('name') || 'Unknown';
+        const email = formData.get('email') || 'No email';
+        
+        logEvent(`Form submitted! Name: ${name}, Email: ${email}`);
+        
+        // Visual feedback
+        this.parentElement.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            this.parentElement.style.transform = 'translateY(0)';
+        }, 300);
+        
+        // Reset form
+        this.reset();
+    });
+    
+    // Input Events
+    demoForm.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', function() {
+            logEvent(`Typing in ${this.placeholder}: ${this.value}`);
+        });
+        
+        input.addEventListener('change', function() {
+            logEvent(`${this.placeholder} changed to: ${this.value}`);
+        });
+    });
+}
+
+// Event Logging System
+const eventLog = document.getElementById('eventLog');
+const maxLogEntries = 20;
+let logEntries = [];
+
+function logEvent(message) {
+    const timestamp = new Date().toLocaleTimeString();
+    const entry = `[${timestamp}] ${message}`;
+    
+    logEntries.unshift(entry);
+    
+    // Keep only last N entries
+    if (logEntries.length > maxLogEntries) {
+        logEntries.pop();
+    }
+    
+    // Update display
+    updateEventLog();
+    
+    // Also log to console
+    console.log(`📝 ${entry}`);
+}
+
+function updateEventLog() {
+    eventLog.innerHTML = logEntries.map(entry => 
+        `<div style="padding: 8px; margin: 5px 0; background: #334155; border-radius: 5px; border-left: 3px solid #10b981;">
+            ${entry}
+        </div>`
+    ).join('');
+}
+
+function clearEventLog() {
+    logEntries = [];
+    updateEventLog();
+    logEvent('Event log cleared');
+}
+
+// ============================================
+// PART 5: MINI PROJECTS
+// ============================================
+
+function initProjects() {
+    // Todo List
+    initTodoList();
+    
+    // Color Picker
+    initColorPicker();
+    
+    // Counter App
+    initCounterApp();
+}
+
+// Project 1: Todo List
+function initTodoList() {
+    let todos = JSON.parse(localStorage.getItem('todos')) || [];
+    let nextId = todos.length > 0 ? Math.max(...todos.map(t => t.id)) + 1 : 1;
+    
+    // Load existing todos
+    renderTodoList();
+    
+    // Update stats
+    updateTodoStats();
+    
+    // Add event listener for Enter key
+    document.getElementById('todoInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            addTodo();
+        }
+    });
+}
+
+function addTodo() {
+    const input = document.getElementById('todoInput');
+    const text = input.value.trim();
+    
+    if (!text) {
+        alert('Please enter a task!');
+        return;
+    }
+    
+    const todos = JSON.parse(localStorage.getItem('todos')) || [];
+    const nextId = todos.length > 0 ? Math.max(...todos.map(t => t.id)) + 1 : 1;
+    
+    const newTodo = {
+        id: nextId,
+        text: text,
+        completed: false,
+        createdAt: new Date().toISOString()
+    };
+    
+    todos.push(newTodo);
+    localStorage.setItem('todos', JSON.stringify(todos));
+    
+    renderTodoList();
+    updateTodoStats();
+    logEvent(`Added todo: "${text}"`);
+    
+    input.value = '';
+    input.focus();
+}
+
+function renderTodoList() {
+    const todos = JSON.parse(localStorage.getItem('todos')) || [];
+    const todoList = document.getElementById('todoList');
+    
+    todoList.innerHTML = '';
+    
+    todos.forEach(todo => {
+        const li = document.createElement('li');
+        li.className = todo.completed ? 'completed' : '';
+        li.innerHTML = `
+            <span>${todo.text}</span>
+            <div>
+                <button onclick="toggleTodo(${todo.id})">
+                    <i class="fas fa-${todo.completed ? 'undo' : 'check'}"></i>
+                </button>
+                <button onclick="deleteTodo(${todo.id})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
+        todoList.appendChild(li);
+    });
+}
+
+function toggleTodo(id) {
+    let todos = JSON.parse(localStorage.getItem('todos')) || [];
+    todos = todos.map(todo => {
+        if (todo.id === id) {
+            return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+    });
+    
+    localStorage.setItem('todos', JSON.stringify(todos));
+    renderTodoList();
+    updateTodoStats();
+    
+    const todo = todos.find(t => t.id === id);
+    logEvent(`Marked todo as ${todo.completed ? 'completed' : 'incomplete'}: "${todo.text}"`);
+}
+
+function deleteTodo(id) {
+    let todos = JSON.parse(localStorage.getItem('todos')) || [];
+    const todoToDelete = todos.find(t => t.id === id);
+    
+    todos = todos.filter(todo => todo.id !== id);
+    localStorage.setItem('todos', JSON.stringify(todos));
+    
+    renderTodoList();
+    updateTodoStats();
+    logEvent(`Deleted todo: "${todoToDelete.text}"`);
+}
+
+function updateTodoStats() {
+    const todos = JSON.parse(localStorage.getItem('todos')) || [];
+    const total = todos.length;
+    const completed = todos.filter(t => t.completed).length;
+    
+    document.getElementById('totalTodos').textContent = total;
+    document.getElementById('completedTodos').textContent = completed;
+}
+
+// Project 2: Color Picker
+function initColorPicker() {
+    const redRange = document.getElementById('redRange');
+    const greenRange = document.getElementById('greenRange');
+    const blueRange = document.getElementById('blueRange');
+    const colorDisplay = document.querySelector('.color-box');
+    const colorValue = document.querySelector('.color-value');
+    
+    function updateColor() {
+        const r = redRange.value;
+        const g = greenRange.value;
+        const b = blueRange.value;
+        
+        const color = `rgb(${r}, ${g}, ${b})`;
+        colorDisplay.style.backgroundColor = color;
+        colorValue.textContent = `RGB(${r}, ${g}, ${b})`;
+        
+        // Update presets if matching
+        updatePresetSelection(color);
+    }
+    
+    // Add event listeners to ranges
+    [redRange, greenRange, blueRange].forEach(range => {
+        range.addEventListener('input', updateColor);
+    });
+    
+    // Add event listeners to preset buttons
+    document.querySelectorAll('.color-preset').forEach(preset => {
+        preset.addEventListener('click', function() {
+            const color = this.getAttribute('data-color');
+            
+            // Parse hex color
+            const r = parseInt(color.slice(1, 3), 16);
+            const g = parseInt(color.slice(3, 5), 16);
+            const b = parseInt(color.slice(5, 7), 16);
+            
+            // Update ranges
+            redRange.value = r;
+            greenRange.value = g;
+            blueRange.value = b;
+            
+            updateColor();
+            logEvent(`Selected preset color: ${color}`);
+        });
+    });
+    
+    // Initialize color
+    updateColor();
+}
+
+function updatePresetSelection(currentColor) {
+    // Convert RGB to hex for comparison
+    const rgb = currentColor.match(/\d+/g);
+    const hex = rgb ? `#${rgb.map(x => parseInt(x).toString(16).padStart(2, '0')).join('')}` : '';
+    
+    document.querySelectorAll('.color-preset').forEach(preset => {
+        if (preset.getAttribute('data-color') === hex) {
+            preset.style.transform = 'scale(1.3)';
+            preset.style.border = '3px solid white';
+        } else {
+            preset.style.transform = 'scale(1)';
+            preset.style.border = '3px solid white';
+        }
+    });
+}
+
+// Project 3: Counter App
+function initCounterApp() {
+    let counter = parseInt(localStorage.getItem('counter')) || 0;
+    let history = JSON.parse(localStorage.getItem('counterHistory')) || [];
+    let step = parseInt(localStorage.getItem('counterStep')) || 1;
+    
+    // Load saved values
+    updateCounterDisplay();
+    renderCounterHistory();
+    
+    // Load settings
+    document.getElementById('negativeAllowed').checked = 
+        localStorage.getItem('allowNegative') === 'true';
+    document.getElementById('stepValue').value = step;
+    
+    // Event listeners for settings
+    document.getElementById('negativeAllowed').addEventListener('change', function() {
+        localStorage.setItem('allowNegative', this.checked);
+        logEvent(`Negative numbers ${this.checked ? 'allowed' : 'disallowed'}`);
+    });
+    
+    document.getElementById('stepValue').addEventListener('change', function() {
+        step = parseInt(this.value) || 1;
+        localStorage.setItem('counterStep', step);
+        logEvent(`Step changed to ${step}`);
+    });
+}
+
+let counter = 0;
+let counterHistory = [];
+
+function incrementCounter() {
+    const step = parseInt(document.getElementById('stepValue').value) || 1;
+    counter += step;
+    saveCounter();
+    updateCounterDisplay();
+    addToHistory(`+${step}`);
+    logEvent(`Counter incremented by ${step} to ${counter}`);
+}
+
+function decrementCounter() {
+    const step = parseInt(document.getElementById('stepValue').value) || 1;
+    const allowNegative = document.getElementById('negativeAllowed').checked;
+    
+    if (!allowNegative && counter - step < 0) {
+        alert('Negative numbers are not allowed!');
+        return;
+    }
+    
+    counter -= step;
+    saveCounter();
+    updateCounterDisplay();
+    addToHistory(`-${step}`);
+    logEvent(`Counter decremented by ${step} to ${counter}`);
+}
+
+function resetCounter() {
+    counter = 0;
+    saveCounter();
+    updateCounterDisplay();
+    addToHistory('Reset');
+    logEvent('Counter reset to 0');
+}
+
+function updateCounterDisplay() {
+    document.getElementById('counterValue').textContent = counter;
+    
+    // Visual feedback
+    const display = document.getElementById('counterValue');
+    display.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        display.style.transform = 'scale(1)';
+    }, 200);
+}
+
+function addToHistory(operation) {
+    const entry = {
+        timestamp: new Date().toLocaleTimeString(),
+        operation: operation,
+        value: counter
+    };
+    
+    counterHistory.unshift(entry);
+    
+    // Keep only last 10 entries
+    if (counterHistory.length > 10) {
+        counterHistory.pop();
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('counterHistory', JSON.stringify(counterHistory));
+    
+    // Update display
+    renderCounterHistory();
+}
+
+function renderCounterHistory() {
+    const historyDiv = document.getElementById('counterHistory');
+    historyDiv.innerHTML = '';
+    
+    counterHistory.forEach(entry => {
+        const div = document.createElement('div');
+        div.style.padding = '8px';
+        div.style.margin = '5px 0';
+        div.style.background = '#f8fafc';
+        div.style.borderRadius = '5px';
+        div.style.fontSize = '0.9rem';
+        div.innerHTML = `
+            <strong>${entry.timestamp}</strong>: ${entry.operation} → ${entry.value}
+        `;
+        historyDiv.appendChild(div);
+    });
+}
+
+function saveCounter() {
+    localStorage.setItem('counter', counter);
+}
+
+// ============================================
+// PART 6: UTILITY FUNCTIONS
+// ============================================
+
+function updateTimestamp() {
+    const now = new Date();
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+    
+    const formatted = now.toLocaleDateString('en-US', options);
+    document.querySelector('#lastUpdated span').textContent = formatted;
+    
+    // Update every minute
+    setTimeout(updateTimestamp, 60000);
+}
+
+// Initialize everything when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("🎯 DOM Manipulation & Events Application Ready!");
+    logEvent('Application initialized');
+});
