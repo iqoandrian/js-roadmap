@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 6 - Modern JavaScript (ES6+)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-bolt"></i> Modern JavaScript (ES6+)</h1>
+            <p class="subtitle">Day 6 - Fitur-fitur keren JavaScript modern</p>
+        </header>
+
+        <div class="grid">
+            <!-- VARIABLES -->
+            <div class="card">
+                <h2><i class="fas fa-box"></i> 1. let & const</h2>
+                <p>Ganti var dengan let/const untuk scope yang lebih jelas</p>
+                <button onclick="demoLetConst()">Demo</button>
+                <div class="output" id="output1"></div>
+            </div>
+
+            <!-- TEMPLATE LITERALS -->
+            <div class="card">
+                <h2><i class="fas fa-quote-right"></i> 2. Template Literals</h2>
+                <p>String dengan embedded expressions: `Hello ${name}`</p>
+                <button onclick="demoTemplateLiterals()">Demo</button>
+                <div class="output" id="output2"></div>
+            </div>
+
+            <!-- DESTRUCTURING -->
+            <div class="card">
+                <h2><i class="fas fa-unpack"></i> 3. Destructuring</h2>
+                <p>Ekstrak value dari array/object dengan mudah</p>
+                <button onclick="demoDestructuring()">Demo</button>
+                <div class="output" id="output3"></div>
+            </div>
+
+            <!-- SPREAD & REST -->
+            <div class="card">
+                <h2><i class="fas fa-expand-alt"></i> 4. Spread & Rest</h2>
+                <p>... operator untuk copy, merge, dan parameters</p>
+                <button onclick="demoSpreadRest()">Demo</button>
+                <div class="output" id="output4"></div>
+            </div>
+
+            <!-- DEFAULT PARAMETERS -->
+            <div class="card">
+                <h2><i class="fas fa-cog"></i> 5. Default Parameters</h2>
+                <p>Default value untuk function parameters</p>
+                <button onclick="demoDefaultParams()">Demo</button>
+                <div class="output" id="output5"></div>
+            </div>
+
+            <!-- ARROW FUNCTIONS -->
+            <div class="card">
+                <h2><i class="fas fa-arrow-right"></i> 6. Arrow Functions</h2>
+                <p>Fungsi dengan syntax pendek: () => {}</p>
+                <button onclick="demoArrowFunctions()">Demo</button>
+                <div class="output" id="output6"></div>
+            </div>
+
+            <!-- ARRAY METHODS -->
+            <div class="card">
+                <h2><i class="fas fa-list"></i> 7. Array Methods</h2>
+                <p>map, filter, reduce - manipulasi array dengan mudah</p>
+                <button onclick="demoArrayMethods()">Demo</button>
+                <div class="output" id="output7"></div>
+            </div>
+
+            <!-- OPTIONAL CHAINING -->
+            <div class="card">
+                <h2><i class="fas fa-link"></i> 8. Optional Chaining</h2>
+                <p>?. untuk akses property yang mungkin undefined</p>
+                <button onclick="demoOptionalChaining()">Demo</button>
+                <div class="output" id="output8"></div>
+            </div>
+
+            <!-- NULLISH COALESCING -->
+            <div class="card">
+                <h2><i class="fas fa-question-circle"></i> 9. Nullish Coalescing</h2>
+                <p>?? untuk default value hanya jika null/undefined</p>
+                <button onclick="demoNullishCoalescing()">Demo</button>
+                <div class="output" id="output9"></div>
+            </div>
+
+            <!-- PROMISE.ALL -->
+            <div class="card">
+                <h2><i class="fas fa-layer-group"></i> 10. Promise.all</h2>
+                <p>Jalankan multiple promises secara bersamaan</p>
+                <button onclick="demoPromiseAll()">Demo</button>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+
+        <!-- REAL-WORLD EXAMPLE -->
+        <div class="example">
+            <h2><i class="fas fa-rocket"></i> Real-World Example</h2>
+            <p>Gabungkan semua fitur modern dalam satu contoh praktis</p>
+            <button onclick="realWorldExample()">Run Example</button>
+            <div class="output" id="realWorldOutput"></div>
+        </div>
+
+        <footer>
+            <p><i class="fab fa-js-square"></i> ES6+ makes JavaScript awesome!</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
